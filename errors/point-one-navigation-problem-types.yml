@@ -1,0 +1,70 @@
+generated: '2026-08-05'
+method: searched
+source: https://support.pointonenav.com/native-api-docs
+format: vendor
+rfc9457: false
+envelopes:
+- api: 'point-one-navigation:graphql'
+  shape: '{"errors":[{"message":"...","extensions":{"code":"..."}}]}'
+  spec: GraphQL over HTTP
+- api: 'point-one-navigation:polaris-native'
+  shape: '{"code":"<status>","message":"<reason>"}'
+- api: 'point-one-navigation:polaris-ntrip'
+  shape: 'HTTP status line only (NTRIP 1.0 responds ICY 200 OK; NTRIP 2.0 responds HTTP/1.1)'
+problems:
+- status: 401
+  code: UNAUTHENTICATED
+  title: Unable to authenticate user
+  detail: 'Context creation failed: Unable to authenticate user'
+  api: 'point-one-navigation:graphql'
+  remediation: 'Present a valid Personal Access Token. Create one under Account > Personal access tokens.'
+  source: 'observed - POST https://graphql.pointonenav.com/graphql without credentials'
+- status: 403
+  title: FORBIDDEN
+  detail: Invalid Polaris API key supplied to the token exchange.
+  api: 'point-one-navigation:polaris-native'
+  operation: 'POST /api/v1/auth/token'
+  remediation: 'Verify the API key at https://app.pointonenav.com and resend as authorization_code.'
+  source: https://support.pointonenav.com/native-api-docs
+- status: 403
+  title: FORBIDDEN
+  detail: Invalid Polaris API key supplied to the NTRIP dynamic-credentials endpoint.
+  api: 'point-one-navigation:polaris-ntrip'
+  operation: 'POST /api/v1/auth/ntrip'
+  remediation: 'Verify the API key at https://app.pointonenav.com.'
+  source: https://support.pointonenav.com/polaris-ntrip-api-docs
+- status: 404
+  code: '404'
+  title: HTTP 404 Not Found
+  detail: 'Unknown path under /api/v1/. Envelope observed verbatim: {"code":"404","message":"HTTP 404 Not Found"}'
+  api: 'point-one-navigation:polaris-native'
+  source: 'observed - GET https://api.pointonenav.com/api/v1/openapi.json'
+- status: 405
+  title: HTTP method not supported by this URL
+  detail: 'Returned by the auth endpoints for any method other than POST.'
+  api: 'point-one-navigation:polaris-native'
+  source: 'observed - GET https://api.pointonenav.com/api/v1/auth/ntrip'
+operational_failure_modes:
+- id: duplicate-connection-identifier
+  transport: 'NTRIP / native Polaris stream'
+  detail: >-
+    Two concurrent connections presenting the same NTRIP username or the same native-protocol
+    unique_id conflict; neither session works correctly. This is not surfaced as an HTTP error - it
+    manifests as corrections not arriving.
+  remediation: 'Assign a distinct identifier per device (max 32 chars NTRIP / 36 chars native; alphanumerics, - and _).'
+  source: https://github.com/PointOneNav/polaris/blob/master/readme.md
+- id: token-expiry-on-established-stream
+  transport: 'native Polaris stream'
+  detail: 'An already-connected client keeps receiving data after its access token expires; expiry only blocks new connections.'
+  source: https://support.pointonenav.com/native-api-docs
+coverage_note: >-
+  This is not a complete error registry. Point One publishes no error-code reference page. Every
+  entry above was either read from a support article or observed on a live unauthenticated probe.
+  GraphQL field-level error codes beyond UNAUTHENTICATED could not be enumerated because
+  introspection is gated and the reference pages do not render.
+x-evidence:
+  fetched: '2026-08-05'
+  probes:
+  - {url: 'https://graphql.pointonenav.com/graphql', method: POST, http_status: 401}
+  - {url: 'https://api.pointonenav.com/api/v1/openapi.json', http_status: 404}
+  - {url: 'https://api.pointonenav.com/api/v1/auth/ntrip', method: GET, http_status: 405}

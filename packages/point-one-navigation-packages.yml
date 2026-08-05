@@ -1,0 +1,74 @@
+generated: '2026-08-05'
+method: searched
+source: https://github.com/PointOneNav
+packages:
+- language: python
+  registry: pypi
+  name: fusion-engine-client
+  url: https://pypi.org/project/fusion-engine-client/
+  install: pip install fusion-engine-client
+  repository: https://github.com/PointOneNav/fusion-engine-client
+  description: Point One FusionEngine Library - message definitions, parsers and analysis tools for the FusionEngine protocol.
+  official: true
+  latest_release: v1.28.0.post1
+  latest_release_date: '2026-07-30'
+- language: c
+  registry: github
+  name: polaris (C client)
+  url: https://github.com/PointOneNav/polaris
+  install: 'CMake FetchContent / Bazel http_archive from https://github.com/PointOneNav/polaris (SOURCE_SUBDIR c)'
+  description: C library for connecting to the Point One Polaris RTK corrections network.
+  official: true
+  latest_release: v1.4.3
+  latest_release_date: '2026-06-01'
+- language: cpp
+  registry: github
+  name: polaris (C++ client)
+  url: https://github.com/PointOneNav/polaris
+  install: 'CMake FetchContent / Bazel http_archive from https://github.com/PointOneNav/polaris'
+  description: C++ library for connecting to the Point One Polaris RTK corrections network, with serial/NTRIP/Septentrio examples.
+  official: true
+  latest_release: v1.4.3
+  latest_release_date: '2026-06-01'
+- language: cpp
+  registry: github
+  name: fusion-engine-client (C++)
+  url: https://github.com/PointOneNav/fusion-engine-client
+  install: 'CMake FetchContent / Bazel from https://github.com/PointOneNav/fusion-engine-client'
+  description: C++ implementation of the FusionEngine message protocol and framer.
+  official: true
+- language: cpp
+  registry: github
+  name: ros2-fusion-engine-driver
+  url: https://github.com/PointOneNav/ros2-fusion-engine-driver
+  install: 'clone into a ROS 2 workspace and colcon build'
+  description: ROS 2 driver for the Point One FusionEngine protocol and devices.
+  official: true
+- language: python
+  registry: github
+  name: p1-host-tools
+  url: https://github.com/PointOneNav/p1-host-tools
+  install: 'clone https://github.com/PointOneNav/p1-host-tools'
+  description: Host-side command-line tools for configuring and interfacing with Point One FusionEngine devices.
+  official: true
+- language: cpp
+  registry: github
+  name: ntrip-example
+  url: https://github.com/PointOneNav/ntrip-example
+  install: 'clone https://github.com/PointOneNav/ntrip-example'
+  description: Barebones NTRIP client example for any RTCM-compatible receiver against the Polaris network.
+  official: true
+  kind: example
+not_found:
+- {registry: npm, queried: ['fusion-engine-client', '@point-one/fusion-engine-client'], status: 404}
+- {registry: pypi, queried: ['p1-host-tools', 'p1-runner', 'polaris-client', 'point-one-fusion-engine'], status: 404}
+notes:
+- No JavaScript/TypeScript, Java, Go, .NET, Ruby, PHP or Rust first-party client library was found in any public registry.
+- The GraphQL platform API ships no generated client; consumers use any standard GraphQL client.
+x-evidence:
+  fetched: '2026-08-05'
+  probes:
+  - {url: 'https://pypi.org/pypi/fusion-engine-client/json', http_status: 200}
+  - {url: 'https://registry.npmjs.org/fusion-engine-client', http_status: 404}
+  - {url: 'https://registry.npmjs.org/@point-one/fusion-engine-client', http_status: 404}
+  - {url: 'https://api.github.com/orgs/PointOneNav/repos', http_status: 200, note: '41 public repos'}

@@ -1,0 +1,89 @@
+generated: '2026-08-05'
+method: searched
+source: https://support.pointonenav.com/network-technical-specifications
+standards:
+- id: rtcm-10403
+  name: RTCM 10403 (Differential GNSS Services, version 3)
+  conforms: true
+  version: 'v3.2 MSM4'
+  evidence: 'Network technical specifications state corrections are transmitted as RTCMv3.2 MSM4; the polaris client readme cites RTCM 10403.'
+  source: https://support.pointonenav.com/network-technical-specifications
+- id: ntrip
+  name: Networked Transport of RTCM via Internet Protocol
+  conforms: true
+  version: '1.0 and 2.0'
+  evidence: 'Caster responds ICY 200 OK for NTRIP 1.0 and HTTP/1.1 chunked for NTRIP 2.0.'
+  source: https://support.pointonenav.com/polaris-ntrip-api-docs
+- id: nmea-0183
+  name: NMEA 0183 (GGA sentences)
+  conforms: true
+  evidence: 'Clients transmit position to the caster as NMEA GGA, in the initial request header or as continuous GGA lines.'
+  source: https://support.pointonenav.com/polaris-ntrip-api-docs
+- id: itrf2014
+  name: International Terrestrial Reference Frame 2014
+  conforms: true
+  evidence: 'ITRF2014 is a published mountpoint and a DatumType enum value; regional datums (NAD83, ETRS89, GDA2020, JGD2011, KGD2002, NZGD2000) are realized against it.'
+  source: https://support.pointonenav.com/polaris-ntrip-api-docs
+- id: graphql
+  name: GraphQL specification
+  conforms: true
+  evidence: 'Single /graphql endpoint returning the standard GraphQL error envelope with extensions.code; published reference declares queries, mutations, subscriptions, interfaces, inputs, enums and scalars.'
+  source: https://docs.pointonenav.com/docs/graphql-api/quickstart
+- id: graphql-introspection
+  name: GraphQL introspection
+  conforms: false
+  evidence: 'Introspection is auth-gated - unauthenticated POST returns HTTP 401 UNAUTHENTICATED at context creation, before validation.'
+- id: openapi
+  name: OpenAPI
+  conforms: false
+  evidence: 'No OpenAPI/Swagger document on any host. Probed /openapi.json, /openapi.yaml, /swagger.json, /api/v1/openapi.json, /api-docs, /docs, /redoc on api.pointonenav.com and pointonenav.com; all 404 or SPA shell. GitHub org code search for openapi returned 0 results across 41 public repos.'
+- id: asyncapi
+  name: AsyncAPI
+  conforms: false
+  evidence: 'No AsyncAPI document. GitHub org code search for asyncapi returned 0 results. Real-time delivery is GraphQL subscriptions plus binary/NTRIP streams, none of which are described in AsyncAPI.'
+- id: oauth2
+  name: OAuth 2.0
+  conforms: false
+  evidence: >-
+    The Polaris token exchange borrows OAuth vocabulary (grant_type=authorization_code,
+    token_type=bearer) over a single unauthenticated POST, but there is no authorization server, no
+    /.well-known/oauth-authorization-server (404 on api. and graphql. hosts), no scopes and no
+    redirect flow. Recorded as non-conformant rather than credited as OAuth.
+- id: oidc
+  name: OpenID Connect
+  conforms: false
+  evidence: '/.well-known/openid-configuration returns 404 on every non-SPA host.'
+- id: rfc9457-problem-details
+  name: RFC 9457 Problem Details for HTTP APIs
+  conforms: false
+  evidence: 'Errors use a vendor envelope {"code","message"}; no application/problem+json responses observed.'
+- id: rfc9116-security-txt
+  name: RFC 9116 security.txt
+  conforms: false
+  evidence: '/.well-known/security.txt returns 404 on pointonenav.com, api.pointonenav.com, graphql.pointonenav.com and support.pointonenav.com.'
+- id: rfc8594-sunset-header
+  name: RFC 8594 Sunset HTTP header
+  conforms: false
+  evidence: 'No deprecation policy or Sunset header support documented.'
+- id: hsts
+  name: HTTP Strict Transport Security
+  conforms: partial
+  evidence: 'support.pointonenav.com sets HSTS with max-age 31536000; pointonenav.com and api.pointonenav.com do not.'
+  source: security/point-one-navigation-domain-security.yml
+compliance_program:
+  published: false
+  note: >-
+    No trust center, no named certifications (SOC 2, ISO 27001, PCI DSS, HIPAA, FedRAMP) and no
+    security or compliance page were found. trust.pointonenav.com does not resolve and
+    pointonenav.com/security/ returns 404. No Compliance pointer is emitted.
+x-evidence:
+  fetched: '2026-08-05'
+  probes:
+  - {url: 'https://api.pointonenav.com/openapi.json', http_status: 404}
+  - {url: 'https://api.pointonenav.com/api/v1/openapi.json', http_status: 404}
+  - {url: 'https://api.pointonenav.com/swagger.json', http_status: 404}
+  - {url: 'https://api.pointonenav.com/api-docs', http_status: 404}
+  - {url: 'https://api.pointonenav.com/redoc', http_status: 404}
+  - {url: 'https://graphql.pointonenav.com/graphql', method: POST, http_status: 401}
+  - {url: 'https://pointonenav.com/security/', http_status: 404}
+  - {url: 'https://trust.pointonenav.com/', http_status: 0, note: 'DNS does not resolve'}

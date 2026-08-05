@@ -1,0 +1,32 @@
+generated: '2026-08-05'
+method: searched
+source: https://github.com/PointOneNav/p1-host-tools
+clis:
+- name: p1-host-tools
+  vendor_official: true
+  repository: https://github.com/PointOneNav/p1-host-tools
+  docs: https://support.pointonenav.com/standard-dev-kit-device-interface-and-command-line-tools
+  language: python
+  distribution: source (GitHub clone) - not published to PyPI
+  purpose: >-
+    Host-side utilities for interfacing with Point One FusionEngine devices - configuring a device,
+    reading and recording FusionEngine output, and running firmware/diagnostic flows over serial or TCP.
+  supersedes: https://github.com/PointOneNav/firmware-tools
+- name: p1_display
+  vendor_official: true
+  distribution: bundled with the FusionEngine tooling
+  purpose: >-
+    Log analysis and visualization tool for FusionEngine recordings - position error plots, reference
+    (truth) data overlay, UTC/GPS time axis and a map time slider.
+  reference: https://pointonenav.com/changelog/
+notes:
+- >-
+  Command-level surface (subcommands and flags) is not transcribed here. It is documented in the
+  repository README and on the Standard Dev Kit knowledge-base page rather than in a machine-readable
+  form, and is not asserted without reading it verbatim.
+- There is no CLI for the platform GraphQL API.
+x-evidence:
+  fetched: '2026-08-05'
+  probes:
+  - {url: 'https://api.github.com/orgs/PointOneNav/repos', http_status: 200}
+  - {url: 'https://support.pointonenav.com/standard-dev-kit-device-interface-and-command-line-tools', http_status: 200}

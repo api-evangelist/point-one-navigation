@@ -1,0 +1,632 @@
+# Point One Navigation - GraphQL surface, transcribed from the provider's published reference.
+# NOT an SDL: live introspection is auth-gated (401). Names only; no arguments or return types asserted.
+generated: '2026-08-05'
+method: searched
+source: https://docs.pointonenav.com/docs/graphql-api/
+name: Point One Navigation Platform GraphQL API
+endpoint: https://graphql.pointonenav.com/graphql
+transport:
+- https
+- websocket (subscriptions)
+authentication: Personal Access Token (Account > Personal access tokens); read-only tokens allow queries + subscriptions,
+  read/write tokens additionally allow mutations
+introspection:
+  attempted: true
+  status: gated
+  http_status: 401
+  error: 'Context creation failed: Unable to authenticate user (extensions.code=UNAUTHENTICATED)'
+  note: 'No SDL is stored in this repo: none could be retrieved without credentials. The inventory below is transcribed
+    from the provider-published reference and asserts NAMES ONLY.'
+x-evidence:
+  fetched: '2026-08-05'
+  endpoint_probe:
+    url: https://graphql.pointonenav.com/graphql
+    method: POST
+    body: '{__schema{queryType{name}}}'
+    http_status: 401
+    content_type: application/json; charset=utf-8
+  root_probe:
+    url: https://graphql.pointonenav.com/
+    http_status: 404
+    body: Not Found. The GraphQL API is available at /graphql
+  reference_index:
+    url: https://docs.pointonenav.com/sitemap.xml
+    http_status: 200
+    content_type: application/xml
+  name_derivation: Names are transcribed from the slugs of the provider-published graphql-markdown reference pages
+    enumerated in the docs sitemap. Every row carries the exact doc URL it came from.
+  limitations:
+  - 'Field arguments, return types, nullability and descriptions are NOT captured: docs.pointonenav.com is a Docusaurus
+    3.10.1 SPA whose per-route JS chunks return the index shell (e.g. /assets/js/17896441.js -> 200 text/html, 3886
+    bytes), so no reference page body renders for a machine or a deep-linking human.'
+  - Acronym casing is approximate where the doc slug lowercased it (e.g. slug auto-virtual-rtkinput is almost certainly
+    AutoVirtualRTKInput). The slug field preserves what was actually observed.
+queries:
+- name: device
+  slug: device
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/queries/device
+- name: deviceProfile
+  slug: device-profile
+  modules:
+  - device-profiles
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/device-profiles/queries/device-profile
+- name: deviceProfiles
+  slug: device-profiles
+  modules:
+  - device-profiles
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/device-profiles/queries/device-profiles
+- name: deviceTags
+  slug: device-tags
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/queries/device-tags
+- name: license
+  slug: license
+  modules:
+  - licenses
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/licenses/queries/license
+- name: licenseTypes
+  slug: license-types
+  modules:
+  - licenses
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/licenses/queries/license-types
+- name: licenses
+  slug: licenses
+  modules:
+  - licenses
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/licenses/queries/licenses
+- name: myDevices
+  slug: my-devices
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/queries/my-devices
+- name: stations
+  slug: stations
+  modules:
+  - stations
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/stations/queries/stations
+- name: stationsByUuids
+  slug: stations-by-uuids
+  modules:
+  - stations
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/stations/queries/stations-by-uuids
+- name: tags
+  slug: tags
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/queries/tags
+- name: viewPersonalAccessTokens
+  slug: view-personal-access-tokens
+  modules:
+  - personal-access-tokens
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/personal-access-tokens/queries/view-personal-access-tokens
+mutations:
+- name: applyLicenseToDevice
+  slug: apply-license-to-device
+  modules:
+  - licenses
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/licenses/mutations/apply-license-to-device
+- name: createDevice
+  slug: create-device
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/mutations/create-device
+- name: createDeviceProfile
+  slug: create-device-profile
+  modules:
+  - device-profiles
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/device-profiles/mutations/create-device-profile
+- name: createDevices
+  slug: create-devices
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/mutations/create-devices
+- name: createLicenses
+  slug: create-licenses
+  modules:
+  - licenses
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/licenses/mutations/create-licenses
+- name: createLicensesForDevices
+  slug: create-licenses-for-devices
+  modules:
+  - licenses
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/licenses/mutations/create-licenses-for-devices
+- name: createPersonalAccessToken
+  slug: create-personal-access-token
+  modules:
+  - personal-access-tokens
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/personal-access-tokens/mutations/create-personal-access-token
+- name: deleteDeviceProfile
+  slug: delete-device-profile
+  modules:
+  - device-profiles
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/device-profiles/mutations/delete-device-profile
+- name: deleteDevices
+  slug: delete-devices
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/mutations/delete-devices
+- name: deletePersonalAccessToken
+  slug: delete-personal-access-token
+  modules:
+  - personal-access-tokens
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/personal-access-tokens/mutations/delete-personal-access-token
+- name: removeLicenseFromDevice
+  slug: remove-license-from-device
+  modules:
+  - licenses
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/licenses/mutations/remove-license-from-device
+- name: revokePersonalAccessToken
+  slug: revoke-personal-access-token
+  modules:
+  - personal-access-tokens
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/personal-access-tokens/mutations/revoke-personal-access-token
+- name: setDeviceProfile
+  slug: set-device-profile
+  modules:
+  - device-profiles
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/device-profiles/mutations/set-device-profile
+- name: setDeviceTag
+  slug: set-device-tag
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/mutations/set-device-tag
+- name: unsetDeviceProfile
+  slug: unset-device-profile
+  modules:
+  - device-profiles
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/device-profiles/mutations/unset-device-profile
+- name: unsetDeviceTag
+  slug: unset-device-tag
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/mutations/unset-device-tag
+- name: updateDevice
+  slug: update-device
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/mutations/update-device
+- name: updateDeviceProfile
+  slug: update-device-profile
+  modules:
+  - device-profiles
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/device-profiles/mutations/update-device-profile
+- name: updateLicenseAutoRenewal
+  slug: update-license-auto-renewal
+  modules:
+  - licenses
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/licenses/mutations/update-license-auto-renewal
+subscriptions:
+- name: device
+  slug: device
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/subscriptions/device
+- name: devices
+  slug: devices
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/subscriptions/devices
+- name: stations
+  slug: stations
+  modules:
+  - common
+  - stations
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/common/subscriptions/stations
+  - https://docs.pointonenav.com/docs/graphql-api/stations/subscriptions/stations
+- name: stationsByUuids
+  slug: stations-by-uuids
+  modules:
+  - common
+  - stations
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/common/subscriptions/stations-by-uuids
+  - https://docs.pointonenav.com/docs/graphql-api/stations/subscriptions/stations-by-uuids
+objects:
+- name: AutoVirtualRtk
+  slug: auto-virtual-rtk
+  modules:
+  - device-profiles
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/device-profiles/objects/auto-virtual-rtk
+- name: DeleteDeviceProfileResult
+  slug: delete-device-profile-result
+  modules:
+  - device-profiles
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/device-profiles/objects/delete-device-profile-result
+- name: DeleteDevicesResult
+  slug: delete-devices-result
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/objects/delete-devices-result
+- name: Device
+  slug: device
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/objects/device
+- name: DeviceCredentials
+  slug: device-credentials
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/objects/device-credentials
+- name: DevicePage
+  slug: device-page
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/objects/device-page
+- name: DeviceProfile
+  slug: device-profile
+  modules:
+  - device-profiles
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/device-profiles/objects/device-profile
+- name: DeviceServices
+  slug: device-services
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/objects/device-services
+- name: Entitlement
+  slug: entitlement
+  modules:
+  - licenses
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/licenses/objects/entitlement
+- name: License
+  slug: license
+  modules:
+  - licenses
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/licenses/objects/license
+- name: LicensePage
+  slug: license-page
+  modules:
+  - licenses
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/licenses/objects/license-page
+- name: LicenseType
+  slug: license-type
+  modules:
+  - licenses
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/licenses/objects/license-type
+- name: MaxTrueRtk
+  slug: max-true-rtk
+  modules:
+  - device-profiles
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/device-profiles/objects/max-true-rtk
+- name: Ntrip
+  slug: ntrip
+  modules:
+  - ntrip
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/ntrip/objects/ntrip
+- name: PersonalAccessToken
+  slug: personal-access-token
+  modules:
+  - personal-access-tokens
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/personal-access-tokens/objects/personal-access-token
+- name: Position
+  slug: position
+  modules:
+  - position
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/position/objects/position
+- name: PositionEcef
+  slug: position-ecef
+  modules:
+  - position
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/position/objects/position-ecef
+- name: PositionHistory
+  slug: position-history
+  modules:
+  - position
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/position/objects/position-history
+- name: PositionLladd
+  slug: position-lladd
+  modules:
+  - position
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/position/objects/position-lladd
+- name: PositionLladms
+  slug: position-lladms
+  modules:
+  - position
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/position/objects/position-lladms
+- name: RtkService
+  slug: rtk-service
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/objects/rtk-service
+- name: Signal
+  slug: signal
+  modules:
+  - signals
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/signals/objects/signal
+- name: Signals
+  slug: signals
+  modules:
+  - signals
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/signals/objects/signals
+- name: SkyPlot
+  slug: sky-plot
+  modules:
+  - stations
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/stations/objects/sky-plot
+- name: SkyPlotByBand
+  slug: sky-plot-by-band
+  modules:
+  - stations
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/stations/objects/sky-plot-by-band
+- name: Station
+  slug: station
+  modules:
+  - stations
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/stations/objects/station
+- name: StationPage
+  slug: station-page
+  modules:
+  - stations
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/stations/objects/station-page
+- name: StationQuality
+  slug: station-quality
+  modules:
+  - stations
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/stations/objects/station-quality
+- name: Tag
+  slug: tag
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/objects/tag
+- name: TagPage
+  slug: tag-page
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/objects/tag-page
+inputs:
+- name: AutoVirtualRtkinput
+  slug: auto-virtual-rtkinput
+  modules:
+  - device-profiles
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/device-profiles/inputs/auto-virtual-rtkinput
+- name: DeviceFilter
+  slug: device-filter
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/inputs/device-filter
+- name: DeviceInput
+  slug: device-input
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/inputs/device-input
+- name: DeviceProfileInput
+  slug: device-profile-input
+  modules:
+  - device-profiles
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/device-profiles/inputs/device-profile-input
+- name: MaxTrueRtkinput
+  slug: max-true-rtkinput
+  modules:
+  - device-profiles
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/device-profiles/inputs/max-true-rtkinput
+- name: PointFilter
+  slug: point-filter
+  modules:
+  - stations
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/stations/inputs/point-filter
+- name: PositionInput
+  slug: position-input
+  modules:
+  - position
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/position/inputs/position-input
+- name: SignalFilter
+  slug: signal-filter
+  modules:
+  - signals
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/signals/inputs/signal-filter
+- name: StationFilter
+  slug: station-filter
+  modules:
+  - stations
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/stations/inputs/station-filter
+- name: StringConditional
+  slug: string-conditional
+  modules:
+  - filters
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/filters/inputs/string-conditional
+- name: TagFilter
+  slug: tag-filter
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/inputs/tag-filter
+- name: TagInput
+  slug: tag-input
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/inputs/tag-input
+enums:
+- name: ConnectionStatus
+  slug: connection-status
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/enums/connection-status
+- name: CorrectionsMode
+  slug: corrections-mode
+  modules:
+  - common
+  - corrections-mode
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/common/enums/corrections-mode
+  - https://docs.pointonenav.com/docs/graphql-api/corrections-mode/enums/corrections-mode
+- name: DatumType
+  slug: datum-type
+  modules:
+  - common
+  - datum-type
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/common/enums/datum-type
+  - https://docs.pointonenav.com/docs/graphql-api/datum-type/enums/datum-type
+- name: SignalType
+  slug: signal-type
+  modules:
+  - signals
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/signals/enums/signal-type
+- name: SolutionType
+  slug: solution-type
+  modules:
+  - devices
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/devices/enums/solution-type
+- name: StationStatus
+  slug: station-status
+  modules:
+  - stations
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/stations/enums/station-status
+- name: TokenRole
+  slug: token-role
+  modules:
+  - personal-access-tokens
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/personal-access-tokens/enums/token-role
+- name: TokenStatus
+  slug: token-status
+  modules:
+  - personal-access-tokens
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/personal-access-tokens/enums/token-status
+interfaces:
+- name: PageResult
+  slug: page-result
+  modules:
+  - pagination
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/pagination/interfaces/page-result
+- name: PositionalEntity
+  slug: positional-entity
+  modules:
+  - common
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/common/interfaces/positional-entity
+scalars:
+- name: Boolean
+  slug: boolean
+  modules:
+  - common
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/common/scalars/boolean
+- name: DateTime
+  slug: date-time
+  modules:
+  - common
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/common/scalars/date-time
+- name: Float
+  slug: float
+  modules:
+  - common
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/common/scalars/float
+- name: Id
+  slug: id
+  modules:
+  - common
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/common/scalars/id
+- name: Int
+  slug: int
+  modules:
+  - common
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/common/scalars/int
+- name: LocalDateTime
+  slug: local-date-time
+  modules:
+  - common
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/common/scalars/local-date-time
+- name: String
+  slug: string
+  modules:
+  - common
+  docs:
+  - https://docs.pointonenav.com/docs/graphql-api/common/scalars/string
+coverage:
+  queries: 12
+  mutations: 19
+  subscriptions: 4
+  objects: 30
+  inputs: 12
+  enums: 8
+  interfaces: 2
+  scalars: 7

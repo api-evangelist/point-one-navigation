@@ -1,0 +1,28 @@
+generated: '2026-08-05'
+method: generated
+source: >-
+  Grounded in operation names published by the provider (support.pointonenav.com API articles and the
+  docs.pointonenav.com GraphQL reference index). No operation, field or endpoint below is invented.
+skills:
+- file: point-one-navigation-connect-device-to-rtk.md
+  name: Connect a device to the Point One Polaris RTK network
+  api: point-one-navigation:polaris-ntrip
+  operations: ['POST /api/v1/auth/ntrip', 'POST /api/v1/auth/token']
+- file: point-one-navigation-manage-device-fleet.md
+  name: Manage a Point One device fleet over the GraphQL API
+  api: point-one-navigation:graphql
+  operations: [myDevices, device, createDevice, createDevices, updateDevice, deleteDevices, tags,
+    deviceTags, setDeviceTag, unsetDeviceTag, licenses, licenseTypes, createLicenses,
+    createLicensesForDevices, applyLicenseToDevice, removeLicenseFromDevice, updateLicenseAutoRenewal,
+    deviceProfiles, deviceProfile, createDeviceProfile, updateDeviceProfile, deleteDeviceProfile,
+    setDeviceProfile, unsetDeviceProfile]
+- file: point-one-navigation-monitor-network-and-devices.md
+  name: Monitor Point One devices and reference stations in real time
+  api: point-one-navigation:graphql
+  operations: [device, devices, stations, stationsByUuids]
+grounding_caveat: >-
+  There is no OpenAPI to grep against. GraphQL operation names come from the slugs of the provider's
+  own published reference pages (enumerated in https://docs.pointonenav.com/sitemap.xml); REST
+  endpoints and the binary message classes come verbatim from support.pointonenav.com articles.
+  Argument shapes are deliberately NOT asserted - the reference pages do not render and introspection
+  is auth-gated.

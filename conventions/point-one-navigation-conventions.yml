@@ -1,0 +1,82 @@
+generated: '2026-08-05'
+method: searched
+source: https://support.pointonenav.com/
+surfaces:
+- {api: 'point-one-navigation:graphql', style: GraphQL, endpoint: 'https://graphql.pointonenav.com/graphql'}
+- {api: 'point-one-navigation:polaris-native', style: 'JSON over HTTPS for auth + framed binary stream', endpoint: 'https://api.pointonenav.com/api/v1/auth/token'}
+- {api: 'point-one-navigation:polaris-ntrip', style: 'NTRIP 1.0 / 2.0 caster', endpoint: 'truertk.pointonenav.com:2102'}
+authentication:
+  style: bearer-token-from-api-key (Polaris) / personal-access-token (GraphQL) / http-basic (NTRIP)
+  detail: authentication/point-one-navigation-authentication.yml
+idempotency:
+  supported: unknown
+  documented: false
+  note: >-
+    No idempotency key, no retry-safety contract and no de-duplication semantics are documented for
+    any surface. The GraphQL mutation set includes create/delete operations (createDevices,
+    createLicenses, deleteDevices) where an idempotency key would matter. Not asserted either way -
+    absence of documentation is recorded, not a claim that retries are unsafe.
+pagination:
+  style: page-object
+  evidence: >-
+    The published GraphQL reference declares a PageResult interface implemented by DevicePage,
+    TagPage, StationPage and LicensePage - a paged-collection convention across every list surface.
+  interface: PageResult
+  page_types: [DevicePage, TagPage, StationPage, LicensePage]
+  params:
+    captured: false
+    reason: 'field arguments are not readable - see the docs-rendering note below'
+filtering:
+  supported: true
+  inputs: [DeviceFilter, TagFilter, StationFilter, SignalFilter, PointFilter, StringConditional]
+  note: >-
+    A StringConditional input type and per-domain filter inputs are published, indicating structured
+    server-side filtering on the list queries. Operator vocabulary not readable.
+realtime:
+  style: graphql-subscriptions
+  subscriptions: [device, devices, stations, stationsByUuids]
+  note: >-
+    Real-time delivery is via GraphQL subscriptions over the same endpoint. There is NO webhook
+    surface and NO AsyncAPI document; correction data itself streams over NTRIP or the native
+    Polaris binary protocol rather than over HTTP callbacks.
+error_envelope:
+  graphql:
+    shape: 'standard GraphQL {"errors":[{"message":..., "extensions":{"code":...}}]}'
+    observed_code: UNAUTHENTICATED
+    evidence: 'unauthenticated POST to https://graphql.pointonenav.com/graphql returned HTTP 401 with this envelope'
+  rest:
+    shape: '{"code":"<status>","message":"<reason>"}'
+    evidence: 'GET https://api.pointonenav.com/api/v1/openapi.json returned {"code":"404","message":"HTTP 404 Not Found"}'
+  rfc9457: false
+  detail: errors/point-one-navigation-problem-types.yml
+versioning:
+  scheme: uri-path
+  current: v1
+  evidence: 'all Polaris HTTP endpoints sit under https://api.pointonenav.com/api/v1/'
+  graphql: 'unversioned single endpoint; changes are announced on https://pointonenav.com/changelog/ under the "GQL Edge <version>" heading'
+  detail: lifecycle/point-one-navigation-lifecycle.yml
+rate_limits:
+  documented: false
+  note: 'No published rate-limit values, headers or 429 semantics were found on any surface.'
+tracing:
+  request_id_header:
+    documented: false
+concurrency:
+  ntrip: >-
+    Connection identity is a hard constraint, not a convention: the NTRIP username and the native
+    protocol unique_id must be unique across all concurrent sessions on one API key. Two connections
+    sharing an identifier conflict and neither works correctly. Max 32 chars (NTRIP) / 36 chars
+    (native), alphanumeric plus - and _.
+docs_rendering_caveat: >-
+  docs.pointonenav.com is a Docusaurus 3.10.1 single-page app whose per-route JavaScript chunks are
+  not deployed - /assets/js/17896441.js and every other chunk named in the webpack runtime return
+  HTTP 200 with the 3886-byte index shell instead of JavaScript. Consequently no reference page body
+  renders, for a crawler or for a human following a deep link. Everything above is taken from
+  support.pointonenav.com (server-rendered and readable), from live probes, or from the docs sitemap.
+x-evidence:
+  fetched: '2026-08-05'
+  probes:
+  - {url: 'https://graphql.pointonenav.com/graphql', method: POST, http_status: 401}
+  - {url: 'https://api.pointonenav.com/api/v1/openapi.json', http_status: 404, content_type: application/json}
+  - {url: 'https://docs.pointonenav.com/assets/js/17896441.js', http_status: 200, content_type: 'text/html', note: 'chunk missing - serves SPA shell'}
+  - {url: 'https://docs.pointonenav.com/sitemap.xml', http_status: 200, content_type: application/xml}

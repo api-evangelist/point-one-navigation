@@ -1,0 +1,79 @@
+generated: '2026-08-05'
+method: probed
+source: direct HTTPS probe of every host in apis.yml
+result: none
+summary: >-
+  No /.well-known/ discovery document is published on any Point One Navigation host. Every path was
+  probed on all six hosts. api.pointonenav.com and graphql.pointonenav.com return honest 404s;
+  pointonenav.com and support.pointonenav.com return their HTML 404 pages; app.pointonenav.com and
+  docs.pointonenav.com return HTTP 200 for EVERY /.well-known/* path with the same single-page-app
+  index shell (1264 and 3886 bytes respectively) - these are catch-all soft-404s, not documents, and
+  are recorded as misses.
+hosts:
+- host: https://api.pointonenav.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/oauth-protected-resource, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+- host: https://graphql.pointonenav.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/oauth-protected-resource, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+- host: https://pointonenav.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 301, note: redirect, no document}
+  - {path: /.well-known/oauth-protected-resource, status: 301, note: redirect, no document}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+- host: https://support.pointonenav.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/oauth-protected-resource, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+- host: https://app.pointonenav.com
+  soft_404: true
+  soft_404_evidence: 'every /.well-known/* path returns HTTP 200 with an identical 1264-byte text/html SPA shell'
+  documents:
+  - {path: /.well-known/security.txt, status: 200, accepted: false, reason: html-spa-catchall}
+  - {path: /.well-known/openid-configuration, status: 200, accepted: false, reason: html-spa-catchall}
+  - {path: /.well-known/oauth-authorization-server, status: 200, accepted: false, reason: html-spa-catchall}
+  - {path: /.well-known/oauth-protected-resource, status: 200, accepted: false, reason: html-spa-catchall}
+  - {path: /.well-known/api-catalog, status: 200, accepted: false, reason: html-spa-catchall}
+  - {path: /.well-known/ai-plugin.json, status: 200, accepted: false, reason: html-spa-catchall}
+  - {path: /.well-known/agent-card.json, status: 200, accepted: false, reason: html-spa-catchall}
+  - {path: /.well-known/agent.json, status: 200, accepted: false, reason: html-spa-catchall}
+- host: https://docs.pointonenav.com
+  soft_404: true
+  soft_404_evidence: 'every /.well-known/* path returns HTTP 200 with an identical 3886-byte Docusaurus index shell'
+  documents:
+  - {path: /.well-known/security.txt, status: 200, accepted: false, reason: html-spa-catchall}
+  - {path: /.well-known/openid-configuration, status: 200, accepted: false, reason: html-spa-catchall}
+  - {path: /.well-known/oauth-authorization-server, status: 200, accepted: false, reason: html-spa-catchall}
+  - {path: /.well-known/oauth-protected-resource, status: 200, accepted: false, reason: html-spa-catchall}
+  - {path: /.well-known/api-catalog, status: 200, accepted: false, reason: html-spa-catchall}
+  - {path: /.well-known/ai-plugin.json, status: 200, accepted: false, reason: html-spa-catchall}
+  - {path: /.well-known/agent-card.json, status: 200, accepted: false, reason: html-spa-catchall}
+  - {path: /.well-known/agent.json, status: 200, accepted: false, reason: html-spa-catchall}
+x-evidence:
+  fetched: '2026-08-05'
+  method: 'curl -s -o file -w "%{http_code}" per host per path; body size and content-type compared against each host 404 control'

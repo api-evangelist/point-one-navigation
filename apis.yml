@@ -1,23 +1,177 @@
 aid: point-one-navigation
 name: Point One Navigation
-description: 'Point One Navigation is a company surfaced via the API Evangelist harvest backlog (source:
-  secondary-market) and added to the network as a stub for full-pipeline profiling.'
+description: 'Point One Navigation operates Polaris, a GNSS RTK corrections network delivering 1-3 cm
+  (True RTK) and sub-10 cm (Virtual RTK) positioning across North America, Europe, the UK, Australia,
+  New Zealand, Japan and South Korea, alongside FusionEngine, its GNSS/INS sensor-fusion positioning
+  engine, and the Atlas and Standard Dev Kit hardware platforms. Developers reach the network three
+  ways: a standards-based NTRIP interface that streams RTCM v3.2 MSM4 corrections to any compatible
+  receiver, a native Polaris protocol with an API-key-to-bearer-token exchange, and a Personal Access
+  Token-authenticated GraphQL platform API for device, tag, license, device-profile and reference
+  station management with real-time subscriptions.'
+image: https://docs.pointonenav.com/img/point-one-white-logo2.jpg
 url: https://raw.githubusercontent.com/api-evangelist/point-one-navigation/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-05'
 modified: '2026-08-05'
 tags:
-- Company
-apis: []
+- Location
+- GNSS
+- Positioning
+- Geospatial
+- RTK
+- Navigation
+- Mapping
+- Robotics
+- Autonomous Vehicles
+- IoT
+- Hardware
+- GraphQL
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+apis:
+- aid: point-one-navigation:polaris-ntrip
+  name: Polaris RTK Network (NTRIP)
+  description: 'Standards-based NTRIP interface to the Point One Polaris RTK corrections network.
+    Clients connect over NTRIP 1.0 or 2.0 to a regional caster, authenticate with Basic auth using a
+    unique per-connection identifier, select the ITRF2014 or LOCAL mountpoint, and stream RTCM v3.2
+    MSM4 corrections for GPS, GLONASS, Galileo, BeiDou and QZSS. Position is supplied to the caster
+    as NMEA GGA. A companion HTTPS endpoint exchanges a single Polaris API key for temporary,
+    roughly 24-hour NTRIP credentials so a device fleet can share one key without sharing one
+    credential.'
+  humanURL: https://support.pointonenav.com/polaris-ntrip-api-docs
+  baseURL: https://api.pointonenav.com/api/v1
+  tags:
+  - RTK
+  - NTRIP
+  - GNSS
+  - Corrections
+  - RTCM
+  properties:
+  - type: Documentation
+    url: https://support.pointonenav.com/polaris-ntrip-api-docs
+  - type: Authentication
+    url: authentication/point-one-navigation-authentication.yml
+- aid: point-one-navigation:polaris-native
+  name: Polaris Native API (Point One Open)
+  description: 'The native Point One corrections protocol. A Polaris API key is POSTed unauthenticated
+    to https://api.pointonenav.com/api/v1/auth/token and exchanged for a bearer access token valid for
+    604800 seconds; the client then opens a TLS stream to rtk.pointonenav.com:8090, sends an
+    Authorization system message carrying the token, and periodically reports its position as an ECEF
+    or LLA system message. The server returns RTCM3 corrections outside the system-message envelope.
+    Messages use a 0xB5 0x62 framed, little-endian, checksummed binary format.'
+  humanURL: https://support.pointonenav.com/native-api-docs
+  baseURL: https://api.pointonenav.com/api/v1
+  tags:
+  - RTK
+  - GNSS
+  - Corrections
+  - RTCM
+  - Streaming
+  properties:
+  - type: Documentation
+    url: https://support.pointonenav.com/native-api-docs
+  - type: Examples
+    url: https://support.pointonenav.com/native-api-examples
+  - type: SourceCode
+    url: https://github.com/PointOneNav/polaris
+  - type: Authentication
+    url: authentication/point-one-navigation-authentication.yml
+- aid: point-one-navigation:graphql
+  name: Point One Platform GraphQL API
+  description: 'The single-endpoint GraphQL API behind the Point One web application, covering device
+    registration and metadata, tags, seat licenses and entitlements, device profiles (True RTK and
+    Virtual RTK correction settings, datum override, correction interval), reference station health
+    and sky plots, and Personal Access Token management. Queries, mutations and real-time
+    subscriptions share one schema; read-only tokens grant queries and subscriptions while read/write
+    tokens are required for mutations.'
+  humanURL: https://docs.pointonenav.com/docs/graphql-api/quickstart
+  baseURL: https://graphql.pointonenav.com/graphql
+  tags:
+  - GraphQL
+  - Device Management
+  - Licensing
+  - Observability
+  - Reference Stations
+  properties:
+  - type: GraphQL
+    url: graphql/point-one-navigation-graphql-surface.yml
+  - type: Documentation
+    url: https://docs.pointonenav.com/docs/graphql-api/quickstart
+  - type: Authentication
+    url: authentication/point-one-navigation-authentication.yml
 common:
+- type: DomainSecurity
+  url: security/point-one-navigation-domain-security.yml
 - type: Website
+  url: https://pointonenav.com/
+- type: DeveloperPortal
+  url: https://pointonenav.com/resources/
+- type: Documentation
+  url: https://docs.pointonenav.com/
+- type: APIReference
+  url: https://docs.pointonenav.com/docs/graphql-api/quickstart
+- type: GettingStarted
+  url: https://support.pointonenav.com/connect-to-point-one-rtk
+- type: Support
+  url: https://support.pointonenav.com/
+- type: HelpCenter
+  url: https://support.pointonenav.com/
+- type: Blog
+  url: https://pointonenav.com/insights/
+- type: GitHubOrganization
+  url: https://github.com/PointOneNav
+- type: Pricing
+  url: https://pointonenav.com/pricing/
+- type: SignUp
+  url: https://app.pointonenav.com/
+- type: TermsOfService
+  url: https://pointonenav.com/terms/
+- type: PrivacyPolicy
+  url: https://pointonenav.com/privacy-policy/
+- type: StatusPage
+  url: https://status.pointonenav.com/
+- type: ChangeLog
+  url: https://pointonenav.com/changelog/
+- type: Contact
+  url: https://pointonenav.com/contact/
+- type: SecondaryMarketListing
   url: https://forgeglobal.com/point-one-navigation_stock/
+- type: GraphQL
+  url: graphql/point-one-navigation-graphql-surface.yml
+- type: Authentication
+  url: authentication/point-one-navigation-authentication.yml
+- type: Packages
+  url: packages/point-one-navigation-packages.yml
+- type: SDKs
+  url: packages/point-one-navigation-packages.yml
+- type: CLI
+  url: cli/point-one-navigation-cli.yml
+- type: WellKnown
+  url: well-known/point-one-navigation-well-known.yml
+- type: Conventions
+  url: conventions/point-one-navigation-conventions.yml
+- type: ErrorCatalog
+  url: errors/point-one-navigation-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/point-one-navigation-lifecycle.yml
+- type: Conformance
+  url: conformance/point-one-navigation-conformance.yml
+- type: DataModel
+  url: data-model/point-one-navigation-data-model.yml
+- type: ChangeLog
+  name: Changelog artifact
+  url: changelog/point-one-navigation-changelog.yml
+- type: LLMsTxt
+  url: llms/point-one-navigation-llms.txt
+- type: AgentSkill
+  url: skills/_index.yml
+x-enrichment:
+  date: '2026-08-05'
+  status: enriched
+  artifacts_added: 17
+  pass: local-v1

@@ -1,0 +1,133 @@
+generated: '2026-08-05'
+method: derived
+source: graphql/point-one-navigation-graphql-surface.yml
+basis: >-
+  Derived from the object/input/enum inventory of the provider-published GraphQL reference plus the
+  Device Profile field names named in the 2026-07-08 GQL Edge 1.18.1 changelog entry. Field-level
+  types could not be read (docs SPA chunks undeployed, introspection gated), so relationships below
+  are inferred from type names and the operations that join them, and each carries a confidence.
+entities:
+- name: Device
+  domain: devices
+  description: A registered GNSS device consuming Polaris corrections.
+  docs: https://docs.pointonenav.com/docs/graphql-api/devices/objects/device
+  known_fields:
+  - {name: services, type: DeviceServices, confidence: medium}
+  - {name: credentials, type: DeviceCredentials, confidence: medium}
+- name: DeviceServices
+  domain: devices
+  description: Container for the per-device service state; holds RtkService.
+  docs: https://docs.pointonenav.com/docs/graphql-api/devices/objects/device-services
+- name: RtkService
+  domain: devices
+  description: >-
+    Live RTK stream context for a device. The 2026-07-08 changelog names three fields explicitly:
+    currentDatum, currentCorrectionsMode, currentDataIntervalSeconds.
+  docs: https://docs.pointonenav.com/docs/graphql-api/devices/objects/rtk-service
+  known_fields:
+  - {name: currentDatum, type: DatumType, confidence: high, source: 'https://pointonenav.com/changelog/'}
+  - {name: currentCorrectionsMode, type: CorrectionsMode, confidence: high, source: 'https://pointonenav.com/changelog/'}
+  - {name: currentDataIntervalSeconds, type: Int, confidence: high, source: 'https://pointonenav.com/changelog/'}
+- name: DeviceCredentials
+  domain: devices
+  description: Connection credentials issued for a device; the Ntrip object hangs off this surface.
+  docs: https://docs.pointonenav.com/docs/graphql-api/devices/objects/device-credentials
+- name: Ntrip
+  domain: ntrip
+  description: NTRIP connection details (caster/mountpoint/credentials) for a device.
+  docs: https://docs.pointonenav.com/docs/graphql-api/ntrip/objects/ntrip
+- name: Tag
+  domain: devices
+  description: User-defined label applied to devices for grouping and filtering.
+  docs: https://docs.pointonenav.com/docs/graphql-api/devices/objects/tag
+- name: DeviceProfile
+  domain: device-profiles
+  description: >-
+    Reusable correction configuration applied to devices. Carries the settings named in the
+    changelog - dataIntervalSeconds, datumOverride, correctionsMode - and one of two profile shapes.
+  docs: https://docs.pointonenav.com/docs/graphql-api/device-profiles/objects/device-profile
+  variants: [MaxTrueRtk, AutoVirtualRtk]
+- name: MaxTrueRtk
+  domain: device-profiles
+  description: True RTK profile shape (1-3 cm accuracy class).
+  docs: https://docs.pointonenav.com/docs/graphql-api/device-profiles/objects/max-true-rtk
+- name: AutoVirtualRtk
+  domain: device-profiles
+  description: Virtual RTK profile shape (sub-10 cm accuracy class).
+  docs: https://docs.pointonenav.com/docs/graphql-api/device-profiles/objects/auto-virtual-rtk
+- name: License
+  domain: licenses
+  description: A seat license granting a device access to the corrections network.
+  docs: https://docs.pointonenav.com/docs/graphql-api/licenses/objects/license
+- name: LicenseType
+  domain: licenses
+  description: The catalog of purchasable license kinds.
+  docs: https://docs.pointonenav.com/docs/graphql-api/licenses/objects/license-type
+- name: Entitlement
+  domain: licenses
+  description: What a license grants.
+  docs: https://docs.pointonenav.com/docs/graphql-api/licenses/objects/entitlement
+- name: PersonalAccessToken
+  domain: personal-access-tokens
+  description: API credential scoped to a user, with a role (TokenRole) and lifecycle state (TokenStatus).
+  docs: https://docs.pointonenav.com/docs/graphql-api/personal-access-tokens/objects/personal-access-token
+- name: Station
+  domain: stations
+  description: A reference base station in the Polaris network.
+  docs: https://docs.pointonenav.com/docs/graphql-api/stations/objects/station
+- name: StationQuality
+  domain: stations
+  description: Health/quality metrics for a reference station.
+  docs: https://docs.pointonenav.com/docs/graphql-api/stations/objects/station-quality
+- name: SkyPlot
+  domain: stations
+  description: Satellite visibility plot for a station; SkyPlotByBand splits it per frequency band.
+  docs: https://docs.pointonenav.com/docs/graphql-api/stations/objects/sky-plot
+- name: Signal
+  domain: signals
+  description: A tracked GNSS signal; Signals is the collection wrapper.
+  docs: https://docs.pointonenav.com/docs/graphql-api/signals/objects/signal
+- name: Position
+  domain: position
+  description: >-
+    Position value with several published projections - PositionEcef (earth-centred earth-fixed),
+    PositionLladd (lat/lon/alt decimal degrees) and PositionLladms (degrees/minutes/seconds).
+    PositionHistory is the time series.
+  docs: https://docs.pointonenav.com/docs/graphql-api/position/objects/position
+relationships:
+- {from: Device, to: DeviceServices, kind: has_one, via: services, confidence: medium}
+- {from: DeviceServices, to: RtkService, kind: has_one, via: rtk, confidence: medium}
+- {from: Device, to: DeviceCredentials, kind: has_one, via: credentials, confidence: medium}
+- {from: DeviceCredentials, to: Ntrip, kind: has_one, via: ntrip, confidence: medium}
+- {from: Device, to: Tag, kind: has_many, via: tags, confidence: high, evidence: 'mutations setDeviceTag / unsetDeviceTag and queries deviceTags / tags'}
+- {from: Device, to: DeviceProfile, kind: has_one, via: profile, confidence: high, evidence: 'mutations setDeviceProfile / unsetDeviceProfile'}
+- {from: DeviceProfile, to: MaxTrueRtk, kind: has_one, via: 'profile variant', confidence: medium}
+- {from: DeviceProfile, to: AutoVirtualRtk, kind: has_one, via: 'profile variant', confidence: medium}
+- {from: Device, to: License, kind: has_many, via: licenses, confidence: high, evidence: 'mutations applyLicenseToDevice / removeLicenseFromDevice / createLicensesForDevices'}
+- {from: License, to: LicenseType, kind: belongs_to, via: type, confidence: high, evidence: 'query licenseTypes alongside licenses'}
+- {from: License, to: Entitlement, kind: has_many, via: entitlements, confidence: medium}
+- {from: Device, to: Position, kind: has_one, via: position, confidence: high, evidence: 'PositionalEntity interface + device/devices subscriptions for live position'}
+- {from: Station, to: Position, kind: has_one, via: position, confidence: high, evidence: 'PositionalEntity interface'}
+- {from: Position, to: PositionHistory, kind: has_many, via: history, confidence: medium}
+- {from: Station, to: StationQuality, kind: has_one, via: quality, confidence: medium}
+- {from: Station, to: SkyPlot, kind: has_one, via: skyPlot, confidence: medium}
+- {from: SkyPlot, to: SkyPlotByBand, kind: has_many, via: byBand, confidence: medium}
+- {from: Station, to: Signal, kind: has_many, via: signals, confidence: medium, evidence: 'SignalFilter input on the stations surface'}
+interfaces:
+- {name: PositionalEntity, implemented_by: [Device, Station], confidence: high, docs: 'https://docs.pointonenav.com/docs/graphql-api/common/interfaces/positional-entity'}
+- {name: PageResult, implemented_by: [DevicePage, TagPage, StationPage, LicensePage], confidence: high, docs: 'https://docs.pointonenav.com/docs/graphql-api/pagination/interfaces/page-result'}
+enums:
+- {name: DatumType, values_known: [AUTO_LOCAL, ITRF2014, NAD83_2011_2010, NAD83_CSRSV7_2010, NZGD2000_20180701_2000, GDA2020_ITRF2014_2020, ETRS89_ETRF2000_2010, ETRS89_ETRF2000_2010_5, ETRS89_ETRF97_2009_756, JGD2011_ITRF94_1997, JGD2011_ITRF2008_2011_395, KGD2002_ITRF2000_2002, NAD83_PA11_2010, NAD83_MA11_2010], source: 'https://pointonenav.com/changelog/', confidence: high}
+- {name: CorrectionsMode, values_known: [], note: 'enum exists; values not readable'}
+- {name: ConnectionStatus, values_known: [], note: 'enum exists; values not readable'}
+- {name: SolutionType, values_known: [], note: 'enum exists; values not readable'}
+- {name: StationStatus, values_known: [], note: 'enum exists; values not readable'}
+- {name: SignalType, values_known: [], note: 'enum exists; values not readable'}
+- {name: TokenRole, values_known: [read-only, read/write], source: 'https://support.pointonenav.com/graphql-api-personal-access-token', confidence: medium, note: 'documented in prose as access levels; the literal enum members are not published'}
+- {name: TokenStatus, values_known: [], note: 'enum exists; values not readable'}
+x-evidence:
+  fetched: '2026-08-05'
+  basis_files: [graphql/point-one-navigation-graphql-surface.yml]
+  probes:
+  - {url: 'https://docs.pointonenav.com/sitemap.xml', http_status: 200}
+  - {url: 'https://pointonenav.com/changelog/', http_status: 200}

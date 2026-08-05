@@ -1,0 +1,101 @@
+generated: '2026-08-05'
+method: searched
+source: https://support.pointonenav.com/native-api-docs
+docs:
+- https://support.pointonenav.com/native-api-docs
+- https://support.pointonenav.com/polaris-ntrip-api-docs
+- https://support.pointonenav.com/graphql-api-personal-access-token
+summary:
+  types: [apiKey, http, custom]
+  api_key_in: [body]
+  oauth2_flows: []
+  note: >-
+    Point One does not run an OAuth 2.0 authorization server. The Polaris services use a bearer-token
+    exchange that borrows OAuth vocabulary (grant_type / token_type / access_token) over a single
+    unauthenticated POST, and the platform GraphQL API uses long-lived Personal Access Tokens minted
+    in the web console. There is no /.well-known/oauth-authorization-server and no
+    /.well-known/openid-configuration on any host (all probed 404 or SPA catch-all).
+schemes:
+- name: PolarisApiKeyTokenExchange
+  type: apiKey
+  in: body
+  parameter: authorization_code
+  api: polaris-native
+  description: >-
+    A Polaris API key (obtained at https://app.pointonenav.com) is POSTed to the token endpoint and
+    exchanged for a short-lived bearer access token used on the corrections stream.
+  token_endpoint: https://api.pointonenav.com/api/v1/auth/token
+  token_endpoint_auth: none
+  request:
+    grant_type: authorization_code
+    token_type: bearer
+    authorization_code: '<Polaris API key>'
+    unique_id: '<unique connection id>'
+  response:
+    token_type: bearer
+    access_token: '<token>'
+    expires_in: '604800'
+    issued_at: '<timestamp>'
+  token_lifetime_seconds: 604800
+  errors:
+  - {status: 403, meaning: FORBIDDEN - invalid API key}
+  notes:
+  - Once connected with a valid token, an established stream keeps receiving data even after the token expires.
+  - The access token is presented on the stream in the Authorization system message (class 0xE0, id 0x01) as ASCII.
+  source: https://support.pointonenav.com/native-api-docs
+- name: PolarisNtripDynamicCredentials
+  type: apiKey
+  in: body
+  parameter: authorization_code
+  api: polaris-ntrip
+  description: >-
+    Exchanges a Polaris API key for a temporary NTRIP username/password pair (~24h) so a fleet can
+    share one key without sharing one credential.
+  token_endpoint: https://api.pointonenav.com/api/v1/auth/ntrip
+  token_endpoint_auth: none
+  token_lifetime_hours: 24
+  errors:
+  - {status: 403, meaning: FORBIDDEN - invalid API key}
+  source: https://support.pointonenav.com/polaris-ntrip-api-docs
+- name: NtripBasicAuth
+  type: http
+  scheme: basic
+  api: polaris-ntrip
+  description: >-
+    Standard NTRIP client authentication against truertk.pointonenav.com. Username must uniquely
+    identify the connection (alphanumeric plus - and _, max 32 chars, no concurrent duplicates);
+    password is issued by Point One or minted via the dynamic-credentials endpoint.
+  hosts:
+  - {host: truertk.pointonenav.com, port: 2102, tls: true, region: north-america}
+  - {host: truertk.pointonenav.com, port: 2101, tls: false, region: north-america, recommended: false}
+  - {host: truertk-eu.pointonenav.com, port: 2102, tls: true, region: europe}
+  - {host: truertk-eu.pointonenav.com, port: 2101, tls: false, region: europe, recommended: false}
+  mountpoints: [ITRF2014, LOCAL]
+  source: https://support.pointonenav.com/polaris-ntrip-api-docs
+- name: PersonalAccessToken
+  type: apiKey
+  api: graphql
+  description: >-
+    User-scoped Personal Access Token created in the web console under Account > Personal access
+    tokens, with a chosen name, expiration and access level. Shown once at creation and not
+    retrievable afterwards.
+  roles:
+  - {role: read-only, grants: [query, subscription]}
+  - {role: read/write, grants: [query, subscription, mutation]}
+  managed_by_api: true
+  management_operations: [viewPersonalAccessTokens, createPersonalAccessToken, revokePersonalAccessToken, deletePersonalAccessToken]
+  expiration: user-selected at creation
+  header:
+    captured: false
+    reason: >-
+      The header name/format is documented only on the GraphQL quickstart page at
+      docs.pointonenav.com, which does not render (Docusaurus SPA with undeployed route chunks).
+      Not asserted here rather than guessed.
+  source: https://support.pointonenav.com/graphql-api-personal-access-token
+x-evidence:
+  fetched: '2026-08-05'
+  probes:
+  - {url: 'https://api.pointonenav.com/api/v1/auth/ntrip', method: GET, http_status: 405, note: 'HTTP 405 confirms the endpoint exists and is POST-only'}
+  - {url: 'https://graphql.pointonenav.com/graphql', method: POST, http_status: 401, note: 'UNAUTHENTICATED - token required'}
+  - {url: 'https://api.pointonenav.com/.well-known/openid-configuration', http_status: 404}
+  - {url: 'https://api.pointonenav.com/.well-known/oauth-authorization-server', http_status: 404}

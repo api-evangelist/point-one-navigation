@@ -1,0 +1,84 @@
+generated: '2026-08-05'
+method: searched
+source: https://pointonenav.com/changelog/
+title: Changelog & Release Notes
+scheme: dated-entries-per-component
+components: [FusionEngine, 'FusionEngine client', 'GQL Edge (GraphQL API)', Atlas]
+current:
+  graphql_api: 1.18.1
+  fusion_engine: 2.2.15
+  fusion_engine_client: 1.28.0
+  fusion_engine_protocol_spec: '0.26'
+entries:
+- date: '2026-07-30'
+  component: FusionEngine
+  version: 2.2.15
+  breaking: true
+  highlights:
+  - Resolved calibration performance issues caused by large vehicle roll angles while stationary
+  - Improved yaw flip detection and recovery, and IMU bias estimation while stationary
+  - Fixed possible nav engine reset after long GNSS outages
+  breaking_note: 'Changes the FusionEngine GNSSSignals and GNSSSatellite source IDs from 0 to 300.'
+- date: '2026-07-30'
+  component: FusionEngine client
+  version: '1.28.0 (protocol spec 0.26)'
+  breaking: false
+  highlights:
+  - Protocol support for multiple GNSS antennas and multiple external pose source locations
+  - New SourceIdentifier definition indicating the source of input/output messages
+  - p1_display reference (truth) data and position error plot support; UTC/GPS time axis and map time slider
+- date: '2026-07-21'
+  component: FusionEngine
+  version: 2.2.14
+  breaking: false
+  highlights:
+  - Support for receiving wheel speeds over TCP
+  - GNSSSignals message output for the secondary antenna on Atlas Duo
+  - Atlas release atlas-v2.8.2
+- date: '2026-07-08'
+  component: GQL Edge (GraphQL API)
+  version: 1.18.1
+  breaking: false
+  api_surface: 'point-one-navigation:graphql'
+  additions:
+  - 'New RTKService fields on the Device object exposing live stream context: currentDatum, currentCorrectionsMode, currentDataIntervalSeconds'
+  - 'DatumType enum expanded by 12 values: NAD83_2011_2010, NAD83_CSRSV7_2010, NZGD2000_20180701_2000, GDA2020_ITRF2014_2020, ETRS89_ETRF2000_2010, ETRS89_ETRF2000_2010_5, ETRS89_ETRF97_2009_756, JGD2011_ITRF94_1997, JGD2011_ITRF2008_2011_395, KGD2002_ITRF2000_2002, NAD83_PA11_2010, NAD83_MA11_2010'
+  compatibility: 'The two original DatumType values AUTO_LOCAL and ITRF2014 are unchanged.'
+  note: 'The new read fields correlate with the Device Profile mutation inputs dataIntervalSeconds, datumOverride and correctionsMode.'
+- date: '2026-07-06'
+  component: FusionEngine
+  version: 2.2.13
+  breaking: false
+  highlights:
+  - Fixed Ubuntu 18 dependency issues; fixed Atlas UI vehicle settings
+  - Improved in-vehicle positioning for the CRIMSON-WOLF Compute Puck
+- date: '2026-06-25'
+  component: FusionEngine
+  version: 2.2.12
+  breaking: false
+  highlights:
+  - 'Network settings overhaul: WiFi stability, simultaneous client + AP mode, multiple static IPv4 addresses per interface, IPv6 disable, manual routing priority'
+  - CAN decoding support for CRIMSON-WOLF vehicles
+  - Multi-threaded processing enabled by default on Atlas, reducing output latency
+  - Fixed configuration/cache migration and settings loss upgrading 1.x to 2.x
+- date: '2026-06-17'
+  component: FusionEngine
+  version: '2.2.10'
+  breaking: false
+  highlights:
+  - GNSS Signals messages output for both primary and secondary antennas
+- date: '2026-06-16'
+  component: FusionEngine
+  version: 2.2.9
+  breaking: false
+  highlights:
+  - Flag FusionEngine pose messages when reporting a GNSS receiver solution
+  - Resumable interrupted log uploads
+  - Fixed occasional false fixes from incorrect RTK base station half-cycle flag handling
+  - Fixed loss of user configuration on calibration reset via the REST API on Atlas
+window: 'recent entries only - the live page at https://pointonenav.com/changelog/ is the source of truth'
+x-evidence:
+  fetched: '2026-08-05'
+  url: https://pointonenav.com/changelog/
+  http_status: 200
+  content_type: 'text/html; charset=utf-8'

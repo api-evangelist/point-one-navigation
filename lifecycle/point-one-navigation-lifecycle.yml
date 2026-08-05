@@ -1,0 +1,47 @@
+generated: '2026-08-05'
+method: searched
+source: https://pointonenav.com/changelog/
+versioning:
+  scheme: uri-path
+  current: v1
+  evidence: 'https://api.pointonenav.com/api/v1/auth/token'
+  graphql:
+    scheme: unversioned-endpoint
+    release_train: 'GQL Edge'
+    current: 1.18.1
+    current_date: '2026-07-08'
+    note: 'GraphQL schema changes are announced on the platform changelog under "GQL Edge <version>" headings.'
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: unknown
+  note: >-
+    No deprecation policy, no Sunset/Deprecation header support (RFC 8594) and no advertised breaking-
+    change notice period were found. The changelog records additive schema changes (new RTKService
+    fields, expanded DatumType enum) and explicitly notes that the two original DatumType values stay
+    unchanged, but that is a release note, not a policy.
+sla:
+  url: https://support.pointonenav.com/network-technical-specifications
+  uptime_target: '99.99%'
+  scope: 'Aggregate Network'
+  latency_target: '<<5s station measurement to device receipt'
+  accuracy:
+    true_rtk: '1-3 cm'
+    virtual_rtk: '<10 cm'
+status_page: https://status.pointonenav.com/
+status_page_title: Point One Navigation Status
+changelog: https://pointonenav.com/changelog/
+client_library_releases:
+- {package: polaris, latest: v1.4.3, date: '2026-06-01', source: 'https://github.com/PointOneNav/polaris/releases'}
+- {package: fusion-engine-client, latest: v1.28.0.post1, date: '2026-07-30', source: 'https://github.com/PointOneNav/fusion-engine-client/releases'}
+deprecated_operations: []
+deprecated_repositories:
+- {repo: 'https://github.com/PointOneNav/firmware-tools', superseded_by: 'https://github.com/PointOneNav/p1-host-tools'}
+- {repo: 'https://github.com/PointOneNav/deprecated-atlas-platform-yocto', status: deprecated}
+x-evidence:
+  fetched: '2026-08-05'
+  probes:
+  - {url: 'https://status.pointonenav.com/', http_status: 200, note: 'title: Point One Navigation Status'}
+  - {url: 'https://pointonenav.com/changelog/', http_status: 200, note: 'title: Changelog - pointonenav.com; dated entries through 2026-07-30'}
+  - {url: 'https://support.pointonenav.com/network-technical-specifications', http_status: 200}
+  - {url: 'https://pointonenav.com/security/', http_status: 404, note: 'no security/deprecation policy page'}
