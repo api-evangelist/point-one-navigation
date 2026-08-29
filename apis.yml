@@ -8,6 +8,19 @@ description: 'Point One Navigation operates Polaris, a GNSS RTK corrections netw
   receiver, a native Polaris protocol with an API-key-to-bearer-token exchange, and a Personal Access
   Token-authenticated GraphQL platform API for device, tag, license, device-profile and reference
   station management with real-time subscriptions.'
+deliveryModel:
+  model: open-core
+  license: MIT
+  open_source: true
+  commercial: true
+  callable_host: false
+  label: Open core · an OSS project plus a commercial hosted product
+  confidence: high
+  source:
+  - license
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://docs.pointonenav.com/img/point-one-white-logo2.jpg
 url: https://raw.githubusercontent.com/api-evangelist/point-one-navigation/refs/heads/main/apis.yml
 x-type: company
@@ -105,6 +118,10 @@ apis:
   - type: Authentication
     url: authentication/point-one-navigation-authentication.yml
 common:
+- type: IssueTracker
+  url: https://github.com/PointOneNav/polaris/issues
+- type: Releases
+  url: https://github.com/PointOneNav/polaris/releases
 - type: License
   name: MIT
   url: https://github.com/PointOneNav/polaris/blob/master/LICENSE
