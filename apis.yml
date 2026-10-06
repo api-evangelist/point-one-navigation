@@ -40,7 +40,7 @@ x-type: company
 x-source: harvest:secondary-market
 specificationVersion: '0.23'
 created: '2026-08-05'
-modified: '2026-08-05'
+modified: '2026-10-06'
 tags:
 - Location
 - GNSS
@@ -131,6 +131,10 @@ apis:
   - type: Authentication
     url: authentication/point-one-navigation-authentication.yml
 common:
+- url: https://pointonenav.com/blog/
+  type: Blog
+- url: https://pointonenav.com/blog/feed/
+  type: BlogRSS
 - type: IssueTracker
   url: https://github.com/PointOneNav/polaris/issues
 - type: Releases
